@@ -1,36 +1,45 @@
 const express = require("express");
 const router = express.Router();
 
-let tasks = [
-  { id: 1, title: "Task 1", completed: true },
-  { id: 2, title: "Task 2", completed: false },
-  { id: 3, title: "Task 3", completed: true },
-];
+module.exports = (tasks, taskId) => {
+  router.post("/create", (req, res) => {
+    const { title } = req.body;
+    const id = taskId++;
 
-router.post("/create", (req, res) => {
-  const { title, completed } = req.body;
-  const newTask = { id: Date.now(), title, completed };
-  tasks.push(newTask);
-  res.json(newTask);
-});
+    const task = {
+      id,
+      title,
+      completed: false,
+    };
 
-router.delete("/delete/:taskId", (req, res) => {
-  const taskId = req.params.taskId;
-  tasks = tasks.filter((task) => task.id !== parseInt(taskId));
-  res.json({ message: `Task with ID ${taskId} deleted successfully` });
-});
+    tasks.push(task);
 
-router.put("/update/:taskId", (req, res) => {
-  const taskId = req.params.taskId;
-  const { title, completed } = req.body;
-  const taskToUpdate = tasks.find((task) => task.id === parseInt(taskId));
-  if (!taskToUpdate) {
-    res.status(404).json({ error: `Task with ID ${taskId} not found` });
-  } else {
-    taskToUpdate.title = title || taskToUpdate.title;
-    taskToUpdate.completed = completed || taskToUpdate.completed;
-    res.json(taskToUpdate);
-  }
-});
+    res.json({ message: "The task has been created successfully.", task });
+  });
 
-module.exports = router;
+  router.delete("/delete/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+    if (taskIndex !== -1) {
+      tasks.splice(taskIndex, 1);
+      res.json({ message: "The task has been successfully deleted." });
+    } else {
+      res.status(404).json({ error: "Task not found." });
+    }
+  });
+
+  router.put("/update/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const task = tasks.find((task) => task.id === id);
+    if (task) {
+      task.completed = true;
+      res.json({ message: "The task has been successfully updated.", task });
+    } else {
+      res.status(404).json({ error: "Task not found." });
+    }
+  });
+
+  return router;
+};
