@@ -5,6 +5,16 @@ const listEditRouter = require("./list-edit-router.js");
 
 app.use(express.json());
 
+const validationHttp = (req, res, next) => {
+  const validMethods = ["GET", "POST", "PUT", "DELETE"];
+  if (!validMethods.includes(req.method)) {
+    return res.status(405).json({ error: "Invalid HTTP method." });
+  }
+  next();
+};
+
+app.use(validateMethodMiddleware);
+
 let tasks = [];
 let taskId = 1;
 
