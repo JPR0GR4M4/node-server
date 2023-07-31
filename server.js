@@ -1,20 +1,20 @@
-const http = require("http");
+const express = require("express");
+const app = express();
+const listViewRouter = require("./list-view-router.js");
+const listEditRouter = require("./list-edit-router.js");
 
-// Sample tasks array
-const tasks = [
-  { id: 1, description: "Task 1", status: "completed" },
-  { id: 2, description: "Task 2", status: "pending" },
-  { id: 3, description: "Task 3", status: "completed" },
-];
+app.use(express.json());
 
-// Create a server
-const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.statusCode = 200;
-  res.end(JSON.stringify(tasks));
+let tasks = [];
+let taskId = 1;
+
+app.use("/edit", listEditRouter(tasks, taskId));
+app.use("/view", listViewRouter(tasks));
+
+app.get("/tasks", (req, res) => {
+  res.json(tasks);
 });
 
-// Start the server
-server.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(3000, () => {
+  console.log("Server running on port 3000.");
 });
