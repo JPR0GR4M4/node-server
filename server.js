@@ -8,12 +8,13 @@ dotenv.config();
 
 const listViewRouter = require("./list-view-router.js");
 const listEditRouter = require("./list-edit-router.js");
-
 const users = [
   { username: "George", password: "8642159" },
   { username: "Thomas", password: "3094782" },
 ];
+
 app.use(express.json());
+
 const validateMiddleware = (req, res, next) => {
   const validMethods = ["GET", "POST", "PUT", "DELETE"];
   if (!validMethods.includes(req.method)) {
