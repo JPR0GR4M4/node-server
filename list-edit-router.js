@@ -30,13 +30,11 @@ module.exports = (tasks, taskId) => {
   router.post("/create", validateRequestBody, (req, res) => {
     const { title } = req.body;
     const id = taskId++;
-
     const task = {
       id,
       title,
       completed: false,
     };
-
     tasks.push(task);
 
     res.json({ message: "The task has been created successfully.", task });
@@ -44,7 +42,6 @@ module.exports = (tasks, taskId) => {
 
   router.delete("/delete/:id", (req, res) => {
     const id = parseInt(req.params.id);
-
     const taskIndex = tasks.findIndex((task) => task.id === id);
     if (taskIndex !== -1) {
       tasks.splice(taskIndex, 1);
@@ -56,7 +53,6 @@ module.exports = (tasks, taskId) => {
 
   router.put("/update/:id", validateRequestBody, (req, res) => {
     const id = parseInt(req.params.id);
-
     const task = tasks.find((task) => task.id === id);
     if (task) {
       task.completed = req.body.completed;
