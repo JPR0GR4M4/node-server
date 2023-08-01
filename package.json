@@ -9,7 +9,7 @@
   "name": "proyecto-integrador---servidor-lista-de-tareas",
   "description": "",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "devDependencies": {},
   "keywords": [],
   "author": "",
