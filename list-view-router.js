@@ -14,10 +14,12 @@ module.exports = (tasks) => {
     const completedTasks = tasks.filter((task) => task.completed);
     res.json(completedTasks);
   });
+  
   router.get("/incomplete", (req, res) => {
     const incompleteTasks = tasks.filter((task) => !task.completed);
     res.json(incompleteTasks);
   });
+  
   router.get("/:id", validateParamsMiddleware, (req, res) => {
     const { id } = req.params;
     const task = tasks.find((task) => task.id === parseInt(id));
