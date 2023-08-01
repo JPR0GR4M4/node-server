@@ -23,7 +23,6 @@ module.exports = (tasks) => {
   router.get("/:id", validateMiddleware, (req, res) => {
     const { id } = req.params;
     const task = tasks.find((task) => task.id === parseInt(id));
-
     if (task) {
       res.json(task);
     } else {
